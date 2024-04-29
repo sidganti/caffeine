@@ -7,13 +7,20 @@ import time
 import pyautogui
 
 
-# TODO: add tweening, keyboard stop, safe termination
+# TODO: keyboard stop, safe termination
 def caffeine(runtime: int = 0) -> None:
     """
     Keeps the screen awake for specifed duration
     """
     pyautogui.FAILSAFE = True
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+    TWEENING_FUNCTIONS = [
+        pyautogui.easeInQuad,
+        pyautogui.easeOutQuad,
+        pyautogui.easeInOutQuad,
+        pyautogui.easeInBounce,
+        pyautogui.easeInElastic
+    ]
 
     def under_runtime() -> bool:
         """
@@ -32,9 +39,10 @@ def caffeine(runtime: int = 0) -> None:
         pos_x = random.randint(0, SCREEN_WIDTH)
         pos_y = random.randint(0, SCREEN_HEIGHT)
         duration = random.randint(1, 5)
+        tween = random.choice(TWEENING_FUNCTIONS)
 
         try:
-            pyautogui.moveTo(pos_y, pos_x, duration)
+            pyautogui.moveTo(pos_y, pos_x, duration, tween)
         except pyautogui.FailSafeException:
             quit()
 
