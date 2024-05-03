@@ -25,7 +25,13 @@ def main():
     )
     args = parser.parse_args()
 
-    caffeine(args.time)
+    # TODO: move try catch to caffeine when converted to class
+    try:
+        caffeine(args.time)
+    except KeyboardInterrupt:
+        print('killed by term')
+        quit()
+
 
 
 if __name__ == '__main__':
