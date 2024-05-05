@@ -22,9 +22,15 @@ def main():
         help='duration you want the program to run (0 runs indefinitely) [default=0]',
         metavar='[0-86400]'
     )
+    parser.add_argument(
+        '-c', '--hotcorners',
+        default=False,
+        action='store_true',
+        help='duration you want the program to run (0 runs indefinitely) [default=0]',
+    )
     args = parser.parse_args()
 
-    caffeine(args.time)
+    caffeine(args.time, args.hotcorners)
 
 
 if __name__ == '__main__':

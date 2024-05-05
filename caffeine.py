@@ -14,8 +14,9 @@ class _Caffiene:
     """
     Internal class to encapsulate data
     """
-    def __init__(self, runtime) -> None:
+    def __init__(self, runtime, hotcorners) -> None:
         self.runtime = runtime
+        self.hotcorners = hotcorners
 
         # keyboard listener initialization
         self._key_listener = keyboard.Listener(
@@ -76,8 +77,11 @@ class _Caffiene:
         """
         Moves mouse to random position on screen
         """
-        pos_x = random.randint(0, self._SCREEN_WIDTH)
-        pos_y = random.randint(0, self._SCREEN_HEIGHT)
+        screen_x = (0 + 100, self._SCREEN_WIDTH - 100) if self.hotcorners else (0, self._SCREEN_WIDTH)
+        screen_y = (0 + 100, self._SCREEN_HEIGHT - 100) if self.hotcorners else (0, self._SCREEN_HEIGHT)
+
+        pos_x = random.randint(*screen_x)
+        pos_y = random.randint(*screen_y)
         duration = random.randint(1, 5)
         tween = random.choice(self._TWEENING_FUNCTIONS)
 
@@ -103,11 +107,11 @@ class _Caffiene:
 add hotcorner support
 add cli running indicator
 """
-def caffeine(runtime: int = 0) -> None:
+def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     """
     Keeps the screen awake for specifed duration
     """
-    caff_job = _Caffiene(runtime)
+    caff_job = _Caffiene(runtime, hotcorners)
     try:
         caff_job.run()
     except KeyboardInterrupt:
