@@ -47,8 +47,10 @@ class _Caffiene:
         """
         LOADING_FRAMES = ["⢿", "⣻", "⣽", "⣾", "⣷", "⣯", "⣟", "⡿"]
 
+        start_time = time.monotonic()
         for frame in cycle(LOADING_FRAMES):
-            print(f'Running {frame}', flush=True, end='\r')
+            time_delta = int(time.monotonic() - start_time)
+            print(f'Running {time_delta}/{self.runtime}s {frame}', flush=True, end='\r')
             time.sleep(0.1)
 
     def run(self):
