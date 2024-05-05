@@ -16,9 +16,12 @@ class Caffiene:
     """
     Class to encapsulate data and logic
 
-    runtime: duration the instance should run
-    hotcorners: prevents mouse from touching the edges of the screen
-    animate: flag to determine write to console
+    *runtime*
+        duration the instance should run
+    *hotcorners*
+        prevents mouse from touching the edges of the screen
+    *animate*
+        flag to determine write to console
     """
     def __init__(self, runtime: int = 0, hotcorners: bool = False, animate: bool = True) -> None:
         self.runtime = runtime
@@ -35,6 +38,10 @@ class Caffiene:
             suppress=True
         )
         self._key_listener.daemon = True
+
+        # mouse thread initialization
+        self.mouse_thread = threading.Thread(target=self.move_mouse)
+        self.mouse_thread.daemon = True
 
         # pyautogui initialization
         pyautogui.FAILSAFE = True
@@ -77,14 +84,22 @@ class Caffiene:
         if self.animate:
             self._key_listener.start()
 
+        reinit_thread = False
+
         end_time = time.monotonic() + self.runtime
         while self._under_runtime(end_time):
             interval = random.randint(5, 10)
             interval_time = time.monotonic() + interval
 
-            mouse_thread = threading.Thread(target=self.move_mouse)
-            mouse_thread.daemon = True
-            mouse_thread.start()
+            if reinit_thread and not self.mouse_thread.is_alive():
+                self.mouse_thread = threading.Thread(target=self.move_mouse)
+                self.mouse_thread.daemon = True
+                self.mouse_thread.start()
+            elif not reinit_thread:
+                reinit_thread = True
+                self.mouse_thread.start()
+            else:
+                continue
 
             while time.monotonic() < interval_time and self._under_runtime(end_time):
                 if not self._key_listener.is_alive():
@@ -95,6 +110,9 @@ class Caffiene:
     def _under_runtime(self, end_time: float) -> bool:
         """
         Check to keep running the program
+
+        *end_time*
+            time the loop should end
         """
         if self.runtime == 0:
             return True
@@ -113,7 +131,7 @@ class Caffiene:
             padding_y = int(self._SCREEN_HEIGHT * 0.1)
 
             screen_x = (0 + padding_x, self._SCREEN_WIDTH - padding_x)
-            screen_y = (0 + padding_y, self._SCREEN_WIDTH - padding_y)
+            screen_y = (0 + padding_y, self._SCREEN_HEIGHT - padding_y)
 
         pos_x = random.randint(*screen_x)
         pos_y = random.randint(*screen_y)
@@ -121,13 +139,16 @@ class Caffiene:
         tween = random.choice(self._TWEENING_FUNCTIONS)
 
         try:
-            pyautogui.moveTo(pos_y, pos_x, duration, tween)
+            pyautogui.moveTo(pos_x, pos_y, duration, tween)
         except pyautogui.FailSafeException:
             pass
 
-    def _key_pressed(self, key):
+    def _key_pressed(self, key: keyboard.KeyCode):
         """
         Wrapper to terminate instance from key_listener
+
+        *key*
+            key that was pressed
         """
         self.stop()
 
@@ -146,4 +167,4 @@ def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     try:
         caff_job.run()
     except KeyboardInterrupt:
-        sys.exit()
+        caff_job.stop()
