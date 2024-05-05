@@ -9,6 +9,7 @@ import sys
 
 from pynput import keyboard
 import pyautogui
+from AppKit import NSBundle
 
 
 class Caffiene:
@@ -45,6 +46,10 @@ class Caffiene:
             pyautogui.easeInBounce,
             pyautogui.easeInElastic
         ]
+
+        # prevents icon popup on macos
+        app_info = NSBundle.mainBundle().infoDictionary()
+        app_info["LSBackgroundOnly"] = "1"
 
     def _running_animation(self):
         """
