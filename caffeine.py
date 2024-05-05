@@ -1,23 +1,28 @@
 """
-Logic to keep screen awake
+Keeps the screen awake by moving the mouse randomly
 """
-import random
-import time
 import threading
-import sys
+import time
 from itertools import cycle
+import random
+import sys
 
-import pyautogui
 from pynput import keyboard
+import pyautogui
 
 
-class _Caffiene:
+class Caffiene:
     """
-    Internal class to encapsulate data
+    Class to encapsulate data and logic
+
+    runtime: duration the instance should run
+    hotcorners: prevents mouse from touching the edges of the screen
+    animate: flag to determine write to console
     """
-    def __init__(self, runtime, hotcorners) -> None:
+    def __init__(self, runtime: int = 0, hotcorners: bool = False, animate: bool = True) -> None:
         self.runtime = runtime
         self.hotcorners = hotcorners
+        self.animate = animate
 
         # running thread initialization
         self._running_thread = threading.Thread(target=self._running_animation)
@@ -64,14 +69,15 @@ class _Caffiene:
         Starts background threads and main logic
         """
         self._running_thread.start()
-        self._key_listener.start()
+        if self.animate:
+            self._key_listener.start()
 
         end_time = time.monotonic() + self.runtime
         while self._under_runtime(end_time):
             interval = random.randint(5, 10)
             interval_time = time.monotonic() + interval
 
-            mouse_thread = threading.Thread(target=self._move_mouse)
+            mouse_thread = threading.Thread(target=self.move_mouse)
             mouse_thread.daemon = True
             mouse_thread.start()
 
@@ -91,12 +97,18 @@ class _Caffiene:
         curr_time = time.monotonic()
         return curr_time < end_time
 
-    def _move_mouse(self) -> None:
+    def move_mouse(self) -> None:
         """
         Moves mouse to random position on screen
         """
-        screen_x = (0 + 100, self._SCREEN_WIDTH - 100) if self.hotcorners else (0, self._SCREEN_WIDTH)
-        screen_y = (0 + 100, self._SCREEN_HEIGHT - 100) if self.hotcorners else (0, self._SCREEN_HEIGHT)
+        screen_x = (0, self._SCREEN_WIDTH)
+        screen_y = (0, self._SCREEN_HEIGHT)
+        if self.hotcorners:
+            padding_x = int(self._SCREEN_WIDTH * 0.1)
+            padding_y = int(self._SCREEN_HEIGHT * 0.1)
+
+            screen_x = (0 + padding_x, self._SCREEN_WIDTH - padding_x)
+            screen_y = (0 + padding_y, self._SCREEN_WIDTH - padding_y)
 
         pos_x = random.randint(*screen_x)
         pos_y = random.randint(*screen_y)
@@ -125,7 +137,7 @@ def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     """
     Keeps the screen awake for specifed duration
     """
-    caff_job = _Caffiene(runtime, hotcorners)
+    caff_job = Caffiene(runtime, hotcorners)
     try:
         caff_job.run()
     except KeyboardInterrupt:
