@@ -5,14 +5,13 @@ import argparse
 from caffeine import caffeine
 
 
-# TODO: add version argument
+# TODO: add version argument, add hotcorners argument
 def main():
     parser = argparse.ArgumentParser(
         prog='Caffeine',
         description='Command-line tool for keeping your computer awake',
         epilog="""
-            Terminate at any time by moving the mouse to the top left of the screen
-            or pressing escape key
+            Terminate at any time by pressing any key
         """
     )
     parser.add_argument(
@@ -25,13 +24,7 @@ def main():
     )
     args = parser.parse_args()
 
-    # TODO: move try catch to caffeine when converted to class
-    try:
-        caffeine(args.time)
-    except KeyboardInterrupt:
-        print('killed by term')
-        quit()
-
+    caffeine(args.time)
 
 
 if __name__ == '__main__':
