@@ -5,6 +5,7 @@ import random
 import time
 import threading
 import sys
+from itertools import cycle
 
 import pyautogui
 from pynput import keyboard
@@ -17,6 +18,10 @@ class _Caffiene:
     def __init__(self, runtime, hotcorners) -> None:
         self.runtime = runtime
         self.hotcorners = hotcorners
+
+        # running thread initialization
+        self._running_thread = threading.Thread(target=self._running_animation)
+        self._running_thread.daemon = True
 
         # keyboard listener initialization
         self._key_listener = keyboard.Listener(
@@ -36,6 +41,16 @@ class _Caffiene:
             pyautogui.easeInElastic
         ]
 
+    def _running_animation(self):
+        """
+        Renders an animation to cli while the instance is running
+        """
+        LOADING_FRAMES = ["⢿", "⣻", "⣽", "⣾", "⣷", "⣯", "⣟", "⡿"]
+
+        for frame in cycle(LOADING_FRAMES):
+            print(f'Running {frame}', flush=True, end='\r')
+            time.sleep(0.1)
+
     def run(self):
         """
         Starts background threads and main logic
@@ -46,6 +61,7 @@ class _Caffiene:
         """
         Starts background threads and main logic
         """
+        self._running_thread.start()
         self._key_listener.start()
 
         end_time = time.monotonic() + self.runtime
@@ -103,10 +119,6 @@ class _Caffiene:
         sys.exit()
 
 
-"""TODO:
-add hotcorner support
-add cli running indicator
-"""
 def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     """
     Keeps the screen awake for specifed duration

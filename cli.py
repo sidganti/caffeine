@@ -5,7 +5,7 @@ import argparse
 from caffeine import caffeine
 
 
-# TODO: add version argument, add hotcorners argument
+# TODO: add version argument
 def main():
     parser = argparse.ArgumentParser(
         prog='Caffeine',
