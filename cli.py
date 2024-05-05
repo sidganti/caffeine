@@ -7,6 +7,9 @@ from caffeine import caffeine
 
 # TODO: add version argument
 def main():
+    """
+    Caffeine cli entry point
+    """
     parser = argparse.ArgumentParser(
         prog='Caffeine',
         conflict_handler='resolve',

@@ -9,7 +9,7 @@ import sys
 
 from pynput import keyboard
 import pyautogui
-from AppKit import NSBundle
+from AppKit import NSBundle # pylint: disable=no-name-in-module
 
 
 class Caffiene:
@@ -40,13 +40,13 @@ class Caffiene:
         self._key_listener.daemon = True
 
         # mouse thread initialization
-        self.mouse_thread = threading.Thread(target=self.move_mouse)
-        self.mouse_thread.daemon = True
+        self._mouse_thread = threading.Thread(target=self.move_mouse)
+        self._mouse_thread.daemon = True
 
         # pyautogui initialization
         pyautogui.FAILSAFE = True
-        self._SCREEN_WIDTH, self._SCREEN_HEIGHT = pyautogui.size()
-        self._TWEENING_FUNCTIONS = [
+        self._screen_width, self._screen_height = pyautogui.size()
+        self._tweening_functions = [
             pyautogui.easeInQuad,
             pyautogui.easeOutQuad,
             pyautogui.easeInOutQuad,
@@ -62,10 +62,10 @@ class Caffiene:
         """
         Renders an animation to cli while the instance is running
         """
-        LOADING_FRAMES = ["⢿", "⣻", "⣽", "⣾", "⣷", "⣯", "⣟", "⡿"]
+        loading_frames = ["⢿", "⣻", "⣽", "⣾", "⣷", "⣯", "⣟", "⡿"]
 
         start_time = time.monotonic()
-        for frame in cycle(LOADING_FRAMES):
+        for frame in cycle(loading_frames):
             time_delta = int(time.monotonic() - start_time)
             print(f'Running {time_delta}/{self.runtime}s {frame}', flush=True, end='\r')
             time.sleep(0.1)
@@ -91,13 +91,13 @@ class Caffiene:
             interval = random.randint(5, 10)
             interval_time = time.monotonic() + interval
 
-            if reinit_thread and not self.mouse_thread.is_alive():
-                self.mouse_thread = threading.Thread(target=self.move_mouse)
-                self.mouse_thread.daemon = True
-                self.mouse_thread.start()
+            if reinit_thread and not self._mouse_thread.is_alive():
+                self._mouse_thread = threading.Thread(target=self.move_mouse)
+                self._mouse_thread.daemon = True
+                self._mouse_thread.start()
             elif not reinit_thread:
                 reinit_thread = True
-                self.mouse_thread.start()
+                self._mouse_thread.start()
             else:
                 continue
 
@@ -124,26 +124,26 @@ class Caffiene:
         """
         Moves mouse to random position on screen
         """
-        screen_x = (0, self._SCREEN_WIDTH)
-        screen_y = (0, self._SCREEN_HEIGHT)
+        screen_x = (0, self._screen_width)
+        screen_y = (0, self._screen_height)
         if self.hotcorners:
-            padding_x = int(self._SCREEN_WIDTH * 0.1)
-            padding_y = int(self._SCREEN_HEIGHT * 0.1)
+            padding_x = int(self._screen_width * 0.1)
+            padding_y = int(self._screen_height * 0.1)
 
-            screen_x = (0 + padding_x, self._SCREEN_WIDTH - padding_x)
-            screen_y = (0 + padding_y, self._SCREEN_HEIGHT - padding_y)
+            screen_x = (0 + padding_x, self._screen_width - padding_x)
+            screen_y = (0 + padding_y, self._screen_height - padding_y)
 
         pos_x = random.randint(*screen_x)
         pos_y = random.randint(*screen_y)
         duration = random.randint(1, 5)
-        tween = random.choice(self._TWEENING_FUNCTIONS)
+        tween = random.choice(self._tweening_functions)
 
         try:
             pyautogui.moveTo(pos_x, pos_y, duration, tween)
         except pyautogui.FailSafeException:
             pass
 
-    def _key_pressed(self, key: keyboard.KeyCode):
+    def _key_pressed(self, key: keyboard.KeyCode): # pylint: disable=unused-argument
         """
         Wrapper to terminate instance from key_listener
 
