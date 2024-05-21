@@ -80,9 +80,9 @@ class Caffiene:
         """
         Starts background threads and main logic
         """
-        self._running_thread.start()
+        self._key_listener.start()
         if self.animate:
-            self._key_listener.start()
+            self._running_thread.start()
 
         reinit_thread = False
 
@@ -161,7 +161,12 @@ class Caffiene:
 
 def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     """
-    Keeps the screen awake for specifed duration
+    Keeps the screen awake for specified duration
+
+    *runtime*
+        duration the instance should run
+    *hotcorners*
+        prevents mouse from reaching the edges of the screen
     """
     caff_job = Caffiene(runtime, hotcorners)
     try:

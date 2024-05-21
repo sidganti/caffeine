@@ -2,10 +2,9 @@
 Command-line interface for Caffeine
 """
 import argparse
-from caffeine import caffeine
+from .calfeine import caffeine
 
 
-# TODO: add version argument
 def main():
     """
     Caffeine cli entry point
@@ -18,6 +17,7 @@ def main():
             Terminate at any time by pressing any key
         """
     )
+    parser.add_argument('--version', action='version', version='%(prog)s 0.0.10')
     runtime_group = parser.add_mutually_exclusive_group()
     runtime_group.add_argument(
         'runtime',
@@ -37,7 +37,7 @@ def main():
         metavar='[0-86400]'
     )
     parser.add_argument(
-        '-c', '--hotcorners',
+        '-c', '--corners',
         default=False,
         action='store_true',
         help='Prevents mouse from reaching corners of display',
@@ -46,7 +46,7 @@ def main():
 
     runtime = args.time if args.runtime == 0 and args.time != 0 else args.runtime
 
-    caffeine(runtime, args.hotcorners)
+    caffeine(runtime, args.corners)
 
 
 if __name__ == '__main__':

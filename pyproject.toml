@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Caffeine"
+version = "0.0.10"
+authors = [
+    { name="Sid Ganti", email="gantisid@gmail.com" },
+]
+maintainers = [
+    { name="Sid Ganti", email="gantisid@gmail.com" },
+]
+description = "Keeps the screen awake by moving the mouse randomly"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.12"
+# dynamic = ["dependencies"]
+dependencies = [
+    "PyAutoGUI>=0.9.54",
+    "pyobjc-core==10.2",
+    "pyobjc-framework-Cocoa==10.2",
+    "pyobjc-framework-Quartz==10.2",
+    "pynput>=1.7.6"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# [tool.setuptools.dynamic]
+# dependencies = {file = ["requirements.txt"]}
+
+
+[project.urls]
+Homepage = "https://github.com/sidganti/caffeine"
+Documentation = "https://github.com/sidganti/caffeine/blob/main/README.md"
+Repository = "https://github.com/sidganti/caffeine.git"
+Issues = "https://github.com/sidganti/caffeine/issues"
+
+[project.scripts]
+caffeine = "caffeine.cli:main"
