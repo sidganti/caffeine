@@ -32,4 +32,4 @@ Repository = "https://github.com/sidganti/caffeine.git"
 Issues = "https://github.com/sidganti/caffeine/issues"
 
 [project.scripts]
-caffeine = "caffeine.cli:main"
+caffeine = "caffeine._cli:main"
