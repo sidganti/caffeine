@@ -1,4 +1,4 @@
 """
 Caffeine module initializer
 """
-from .calfeine import caffeine, Caffiene
+from ._caffeine import caffeine, Caffiene

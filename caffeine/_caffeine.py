@@ -1,15 +1,14 @@
 """
 Keeps the screen awake by moving the mouse randomly
 """
+import platform
 import threading
 import time
 from itertools import cycle
 import random
 import sys
 
-from pynput import keyboard
 import pyautogui
-from AppKit import NSBundle # pylint: disable=no-name-in-module
 
 
 class Caffiene:
@@ -33,11 +32,8 @@ class Caffiene:
         self._running_thread.daemon = True
 
         # keyboard listener initialization
-        self._key_listener = keyboard.Listener(
-            on_press=self._key_pressed,
-            suppress=True
-        )
-        self._key_listener.daemon = True
+        self._key_thread = threading.Thread(target=self._key_pressed)
+        self._key_thread.daemon = True
 
         # mouse thread initialization
         self._mouse_thread = threading.Thread(target=self.move_mouse)
@@ -55,8 +51,10 @@ class Caffiene:
         ]
 
         # prevents icon popup on macos
-        app_info = NSBundle.mainBundle().infoDictionary()
-        app_info["LSBackgroundOnly"] = "1"
+        if platform.system() == 'Darwin':
+            from AppKit import NSBundle # pylint: disable=no-name-in-module import-outside-toplevel
+            app_info = NSBundle.mainBundle().infoDictionary()
+            app_info["LSBackgroundOnly"] = "1"
 
     def _running_animation(self):
         """
@@ -80,7 +78,7 @@ class Caffiene:
         """
         Starts background threads and main logic
         """
-        self._key_listener.start()
+        self._key_thread.start()
         if self.animate:
             self._running_thread.start()
 
@@ -102,7 +100,7 @@ class Caffiene:
                 continue
 
             while time.monotonic() < interval_time and self._under_runtime(end_time):
-                if not self._key_listener.is_alive():
+                if not self._key_thread.is_alive():
                     self.stop()
 
                 time.sleep(0.01)
@@ -143,14 +141,32 @@ class Caffiene:
         except pyautogui.FailSafeException:
             pass
 
-    def _key_pressed(self, key: keyboard.KeyCode): # pylint: disable=unused-argument
+    def _key_pressed(self):
         """
-        Wrapper to terminate instance from key_listener
+        Listens to keypresses using getch
+        """
+        self._getch()
 
-        *key*
-            key that was pressed
+    def _getch(self):
         """
-        self.stop()
+        Reads a character from stdin
+        """
+        if platform.system() == 'Darwin' or platform.system() == 'Linux':
+            # pylint: disable=import-outside-toplevel multiple-imports import-error
+            import tty, termios
+
+            fd = sys.stdin.fileno()
+            old_settings = termios.tcgetattr(fd)
+            try:
+                tty.setraw(fd)
+                ch = sys.stdin.read(1)
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            return ch
+        else:
+            import msvcrt # pylint: disable=import-outside-toplevel import-error
+
+            return msvcrt.getch()
 
     def stop(self) -> None:
         """
