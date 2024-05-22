@@ -12,7 +12,7 @@ For more granular control over the logic, the Caffeine class can be imported. Th
 
 ## Installation
 
-1. Have Python 3.12+ installed
+1. Have Python 3.12+ installed (may work with older versions of python)
     - [How to install](https://www.python.org/downloads/)
 
 2. Execute the following command in your console
@@ -71,7 +71,7 @@ caffeine --corners
 
 Press any key on the keyboard.
 
-In case something went wrong you have two options. Use you operating systems preferred termination signal: <kbd>ctrl</kbd>+<kbd>c</kbd> on Mac/Linux or <kbd>ctrl</kbd>+<kbd>z</kbd> on Windows. Since pyautogui's failsafe option is enabled you can also drag your mouse to the top left corner of the screen to terminate.
+In case something pressing any single key went wrong, you have two options. Use you operating systems preferred termination signal: <kbd>ctrl</kbd>+<kbd>c</kbd> on Mac/Linux or <kbd>ctrl</kbd>+<kbd>z</kbd> on Windows. Since pyautogui's failsafe option is enabled you can also drag your mouse to the top left corner of the screen to terminate.
 
 #### Help
 
@@ -106,6 +106,11 @@ caffeine --version
 Functions nearly identical to the CLI. The CLI is essentially a wrapper for the caffeine function.
 
 ```python
+# recommended import
+from caffeine import caffeine
+```
+
+```python
 # caffeine function definition
 def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
 ```
@@ -116,9 +121,19 @@ def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
 - hotcorners
     - prevents mouse from reaching the edges of the screen
 
+```python
+# example function call
+caffeine(600, True)
+```
+
 ### Caffeine class
 
 Encapsulates all of the data and logic required to move the mouse for a specified duration of time.
+
+```python
+# recommended import
+from caffeine import Caffeine
+```
 
 ```python
 # Caffeine class constructor definition
@@ -132,6 +147,11 @@ def __init__(self, runtime: int = 0, hotcorners: bool = False, animate: bool = T
 - animate
     - flag to determine write to console
 
+```python
+# example instantiation
+caff = Caffeine(600, True)
+```
+
 #### start() method
 
 Starts logic to run Caffeine for a specified duration.
@@ -139,6 +159,11 @@ Starts logic to run Caffeine for a specified duration.
 ```python
 # start method definition
 def start(self):
+```
+
+```python
+# example call
+caff.start()
 ```
 
 #### run() method
@@ -150,6 +175,11 @@ Alias for the start() method
 def run(self):
 ```
 
+```python
+# example call
+caff.run()
+```
+
 #### move_mouse() method
 
 Moves the mouse to a random position on the screen for a random duration. Also takes advantage of pyautogui's tweening functions to make mouse movement more natural.
@@ -159,6 +189,11 @@ Moves the mouse to a random position on the screen for a random duration. Also t
 def move_mouse(self) -> None:
 ```
 
+```python
+# example call
+caff.move_mouse()
+```
+
 #### stop() method
 
 Safely terminates Caffeine instance
@@ -166,6 +201,11 @@ Safely terminates Caffeine instance
 ```python
 # stop method definition
 def stop(self) -> None:
+```
+
+```python
+# example call
+caff.stop()
 ```
 
 ## License

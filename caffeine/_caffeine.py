@@ -184,8 +184,8 @@ def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     *hotcorners*
         prevents mouse from reaching the edges of the screen
     """
-    caff_job = Caffiene(runtime, hotcorners)
+    caff = Caffiene(runtime, hotcorners)
     try:
-        caff_job.run()
+        caff.run()
     except KeyboardInterrupt:
-        caff_job.stop()
+        caff.stop()
