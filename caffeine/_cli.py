@@ -2,6 +2,7 @@
 Command-line interface for Caffeine
 """
 import argparse
+import caffeine as caff
 from ._caffeine import caffeine
 
 
@@ -17,7 +18,7 @@ def main():
             Terminate at any time by pressing any key
         """
     )
-    parser.add_argument('--version', action='version', version='%(prog)s 0.0.12')
+    parser.add_argument('-V', '--version', action='version', version=caff.__version__)
     runtime_group = parser.add_mutually_exclusive_group()
     runtime_group.add_argument(
         'runtime',

@@ -92,7 +92,7 @@ caffeine --help
 Prints the version of Caffeine
 
 ```console
-caffeine -v
+caffeine -V
 ```
 
 or

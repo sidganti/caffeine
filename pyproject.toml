@@ -4,27 +4,26 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Caffeine"
-version = "0.0.12"
 authors = [
-    { name="Sid Ganti", email="gantisid@gmail.com" },
+    { name="Sid Ganti", email="gantisid@gmail.com" }
 ]
 maintainers = [
-    { name="Sid Ganti", email="gantisid@gmail.com" },
+    { name="Sid Ganti", email="gantisid@gmail.com" }
 ]
 description = "Keeps the screen awake by moving the mouse randomly"
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.12"
-dynamic = ["dependencies"]
+dynamic = ["version", "dependencies"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: OS Independent"
 ]
 
 [tool.setuptools.dynamic]
+version = {attr = "caffeine.__version__"}
 dependencies = {file = ["requirements.txt"]}
-
 
 [project.urls]
 Homepage = "https://github.com/sidganti/caffeine"
