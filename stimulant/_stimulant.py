@@ -11,7 +11,7 @@ import sys
 import pyautogui
 
 
-class Caffiene:
+class Stimulant:
     """
     Class to encapsulate data and logic
 
@@ -157,12 +157,15 @@ class Caffiene:
 
             fd = sys.stdin.fileno()
             old_settings = termios.tcgetattr(fd)
-            try:
-                tty.setraw(fd)
-                ch = sys.stdin.read(1)
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            tty.setcbreak(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+            # Exit on ctrl-c, ctrl-d, ctrl-z, or ESC
+            if ord(ch) in [3, 4, 26, 27]:
+                sys.exit()
             return ch
+
         else:
             import msvcrt # pylint: disable=import-outside-toplevel import-error
 
@@ -172,10 +175,11 @@ class Caffiene:
         """
         Safely terminates instance
         """
+        sys.stdout.flush()
         sys.exit()
 
 
-def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
+def stimulant(runtime: int = 0, hotcorners: bool = False) -> None:
     """
     Keeps the screen awake for specified duration
 
@@ -184,8 +188,8 @@ def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
     *hotcorners*
         prevents mouse from reaching the edges of the screen
     """
-    caff = Caffiene(runtime, hotcorners)
+    stim = Stimulant(runtime, hotcorners)
     try:
-        caff.run()
+        stim.run()
     except KeyboardInterrupt:
-        caff.stop()
+        stim.stop()

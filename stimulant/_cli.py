@@ -1,24 +1,24 @@
 """
-Command-line interface for Caffeine
+Command-line interface for Stimulant
 """
 import argparse
-import caffeine as caff
-from ._caffeine import caffeine
+import stimulant as stim
+from ._stimulant import stimulant
 
 
 def main():
     """
-    Caffeine cli entry point
+    Stimulant cli entry point
     """
     parser = argparse.ArgumentParser(
-        prog='Caffeine',
+        prog='stimulant',
         conflict_handler='resolve',
         description='Command-line tool for keeping your computer awake',
         epilog="""
             Terminate at any time by pressing any key
         """
     )
-    parser.add_argument('-V', '--version', action='version', version=caff.__version__)
+    parser.add_argument('-V', '--version', action='version', version=stim.__version__)
     runtime_group = parser.add_mutually_exclusive_group()
     runtime_group.add_argument(
         'runtime',
@@ -47,7 +47,7 @@ def main():
 
     runtime = args.time if args.runtime == 0 and args.time != 0 else args.runtime
 
-    caffeine(runtime, args.corners)
+    stimulant(runtime, args.corners)
 
 
 if __name__ == '__main__':

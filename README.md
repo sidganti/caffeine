@@ -1,14 +1,14 @@
-# Caffeine
+# Stimulant
 
 Keeps the screen awake by moving the mouse randomly.
 
 ## Description
 
-Caffeine is intended to be used as a cli tool or imported to another python project.
+Stimulant is intended to be used as a cli tool or imported to another python project.
 
-If used as a cli tool or with importing caffeine(), Caffeine will move the mouse for the specified runtime. While under the runtime the mouse will move to a random location on the screen. This process will repeat at random intervals. The movement of the mouse is achieved using the pyautogui library. Pyautogui's duration and tweening parameters allow for more natural mouse movement patterns across the screen. To terminate Caffeine, simply press any key on the keyboard.
+If used as a cli tool or with importing stimulant(), Stimulant will move the mouse for the specified runtime. While under the runtime the mouse will move to a random location on the screen. This process will repeat at random intervals. The movement of the mouse is achieved using the pyautogui library. Pyautogui's duration and tweening parameters allow for more natural mouse movement patterns across the screen. To terminate Stimulant, simply press any key on the keyboard.
 
-For more granular control over the logic, the Caffeine class can be imported. The class, along with its public methods, allows for customized use cases to be implemented. An example may be to have the mouse move for an unknown duration of time that would be determined by another process.
+For more granular control over the logic, the Stimulant class can be imported. The class, along with its public methods, allows for customized use cases to be implemented. An example may be to have the mouse move for an unknown duration of time that would be determined by another process.
 
 ## Installation
 
@@ -18,7 +18,10 @@ For more granular control over the logic, the Caffeine class can be imported. Th
 2. Execute the following command in your console
 
 ```console
-pip install git+https://github.com/sidganti/caffeine.git
+pip install stimulant
+
+# or install from git repo
+pip install git+https://github.com/sidganti/stimulant.git
 ```
 
 ## Documentation
@@ -28,29 +31,29 @@ pip install git+https://github.com/sidganti/caffeine.git
 #### Run indefinitely
 
 ```console
-caffeine
+stim
 ```
 
 #### Run for a specified time in seconds
 
 Limited to one day aka 86,400 seconds.
 
-If 0 is given as an argument then Caffeine will run indefinitely.
+If 0 is given as an argument then Stimulant will run indefinitely.
 
 ```console
-caffeine <0-86400>
+stim <0-86400>
 ```
 
 or
 
 ```console
-caffeine -t <0-86400>
+stim -t <0-86400>
 ```
 
 or
 
 ```console
-caffeine --time <0-86400>
+stim --time <0-86400>
 ```
 
 #### Hotcorner protection
@@ -58,16 +61,16 @@ caffeine --time <0-86400>
 Pass the flag to prevent triggering [hotcorners](https://support.apple.com/guide/mac-help/use-hot-corners-mchlp3000/mac) enabled on your device.
 
 ```console
-caffeine -c
+stim -c
 ```
 
 or
 
 ```console
-caffeine --corners
+stim --corners
 ```
 
-#### End Caffeine manually
+#### End Stimulant manually
 
 Press any key on the keyboard.
 
@@ -78,65 +81,71 @@ In case something pressing any single key went wrong, you have two options. Use 
 Provides detail on CLI's usage.
 
 ```console
-caffeine -h
+stim -h
 ```
 
 or
 
 ```console
-caffeine --help
+stim --help
 ```
 
 #### Version
 
-Prints the version of Caffeine
+Prints the version of Stimulant
 
 ```console
-caffeine -V
+stim -V
 ```
 
 or
 
 ```console
-caffeine --version
+stim --version
 ```
 
-### caffeine() function
+### stimulant() function
 
-Functions nearly identical to the CLI. The CLI is essentially a wrapper for the caffeine function.
+Functions nearly identical to the CLI. The CLI is essentially a wrapper for the stimulant() function.
 
 ```python
-# recommended import
-from caffeine import caffeine
+# recommended individual import
+from stimulant import stimulant
+
+# recommended module import
+import stimulant as stim
 ```
 
 ```python
-# caffeine function definition
-def caffeine(runtime: int = 0, hotcorners: bool = False) -> None:
+# stimulant function definition
+def stimulant(runtime: int = 0, hotcorners: bool = False) -> None:
 ```
 
 - runtime
     - duration the instance should run
-    - if 0 is passed in to the function then caffeine will run indefinitely
+    - if 0 is passed in to the function then stimulant will run indefinitely
 - hotcorners
     - prevents mouse from reaching the edges of the screen
 
 ```python
 # example function call
-caffeine(600, True)
+stimulant(600, True)
 ```
 
-### Caffeine class
+### Stimulant class
 
 Encapsulates all of the data and logic required to move the mouse for a specified duration of time.
 
 ```python
-# recommended import
-from caffeine import Caffeine
+# recommended individual import
+from stimulant import Stimulant
+
+# recommended module import
+import stimulant as stim
 ```
 
 ```python
-# Caffeine class constructor definition
+# Stimulant class constructor definition
 def __init__(self, runtime: int = 0, hotcorners: bool = False, animate: bool = True) -> None:
 ```
 
@@ -149,12 +158,12 @@ def __init__(self, runtime: int = 0, hotcorners: bool = False, animate: bool = T
 
 ```python
 # example instantiation
-caff = Caffeine(600, True)
+stim = Stimulant(600, True)
 ```
 
 #### start() method
 
-Starts logic to run Caffeine for a specified duration.
+Starts logic to run Stimulant for a specified duration.
 
 ```python
 # start method definition
@@ -163,7 +172,7 @@ def start(self):
 
 ```python
 # example call
-caff.start()
+stim.start()
 ```
 
 #### run() method
@@ -177,7 +186,7 @@ def run(self):
 
 ```python
 # example call
-caff.run()
+stim.run()
 ```
 
 #### move_mouse() method
@@ -191,12 +200,12 @@ def move_mouse(self) -> None:
 
 ```python
 # example call
-caff.move_mouse()
+stim.move_mouse()
 ```
 
 #### stop() method
 
-Safely terminates Caffeine instance
+Safely terminates Stimulant instance
 
 ```python
 # stop method definition
@@ -205,8 +214,13 @@ def stop(self) -> None:
 
 ```python
 # example call
-caff.stop()
+stim.stop()
 ```
+
+## Future
+- Improve threading to allow exception handling and safer thread termination
+- Allow access to more variables to cli and class/function calls
+- Ability to kill stimulant via callback function
 
 ## License
 

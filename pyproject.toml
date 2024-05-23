@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Caffeine"
+name = "stimulant"
 authors = [
     { name="Sid Ganti", email="gantisid@gmail.com" }
 ]
@@ -22,14 +22,14 @@ classifiers = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "caffeine.__version__"}
+version = {attr = "stimulant.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
 [project.urls]
-Homepage = "https://github.com/sidganti/caffeine"
-Documentation = "https://github.com/sidganti/caffeine/blob/main/README.md"
-Repository = "https://github.com/sidganti/caffeine.git"
-Issues = "https://github.com/sidganti/caffeine/issues"
+Homepage = "https://github.com/sidganti/stimulant"
+Documentation = "https://github.com/sidganti/stimulant/blob/main/README.md"
+Repository = "https://github.com/sidganti/stimulant.git"
+Issues = "https://github.com/sidganti/stimulant/issues"
 
 [project.scripts]
-caffeine = "caffeine._cli:main"
+stim = "stimulant._cli:main"
