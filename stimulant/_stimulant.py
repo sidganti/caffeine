@@ -67,7 +67,8 @@ class Stimulant:
         start_time = time.monotonic()
         for frame in cycle(loading_frames):
             time_delta = int(time.monotonic() - start_time)
-            print(f'Running {time_delta}/{self.runtime}s {frame}', flush=True, end='\r')
+            runtime = '∞' if self.runtime == 0 else self.runtime
+            print(f'Running {time_delta}/{runtime}s {frame}', flush=True, end='\r')
             time.sleep(0.1)
 
     def run(self):
@@ -180,9 +181,6 @@ class Stimulant:
         """
         Safely terminates instance
         """
-        if self.system == 'Windows':
-            print('\r', flush=True)
-
         sys.stdout.flush()
         sys.exit()
 
