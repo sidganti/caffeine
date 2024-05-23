@@ -181,9 +181,7 @@ class Stimulant:
         """
         Safely terminates instance
         """
-        if self.system == 'Darwin' or self.system == 'Linux':
-            os.system('clear')
-        elif self.system == 'Windows':
+        if self.system == 'Windows':
             os.system('cls')
         else:
             # Java not supported
