@@ -182,9 +182,6 @@ class Stimulant:
         """
         if self.system == 'Windows':
             print('\r', flush=True)
-        else:
-            # Java not supported
-            pass
 
         sys.stdout.flush()
         sys.exit()
