@@ -28,6 +28,8 @@ class Stimulant:
         self.hotcorners = hotcorners
         self.animate = animate
 
+        self.system = platform.system()
+
         # running thread initialization
         self._running_thread = threading.Thread(target=self._running_animation)
         self._running_thread.daemon = True
@@ -52,7 +54,7 @@ class Stimulant:
         ]
 
         # prevents icon popup on macos
-        if platform.system() == 'Darwin':
+        if self.system == 'Darwin':
             from AppKit import NSBundle # pylint: disable=no-name-in-module import-outside-toplevel
             app_info = NSBundle.mainBundle().infoDictionary()
             app_info["LSBackgroundOnly"] = "1"
@@ -152,7 +154,7 @@ class Stimulant:
         """
         Reads a character from stdin
         """
-        if platform.system() == 'Darwin' or platform.system() == 'Linux':
+        if self.system == 'Darwin' or self.system == 'Linux':
             # pylint: disable=import-outside-toplevel multiple-imports import-error
             import tty, termios
 
@@ -167,16 +169,26 @@ class Stimulant:
                 sys.exit()
             return ch
 
-        else:
+        elif self.system == 'Windows':
             import msvcrt # pylint: disable=import-outside-toplevel import-error
 
             return msvcrt.getch()
+        else:
+            # Java not supported
+            pass
 
     def stop(self) -> None:
         """
         Safely terminates instance
         """
-        os.system('cls')
+        if self.system == 'Darwin' or self.system == 'Linux':
+            os.system('clear')
+        elif self.system == 'Windows':
+            os.system('cls')
+        else:
+            # Java not supported
+            pass
+
         sys.stdout.flush()
         sys.exit()
 
