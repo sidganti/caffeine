@@ -7,7 +7,6 @@ import time
 from itertools import cycle
 import random
 import sys
-import os
 
 import pyautogui
 
@@ -182,7 +181,7 @@ class Stimulant:
         Safely terminates instance
         """
         if self.system == 'Windows':
-            os.system('cls')
+            print('\r', flush=True)
         else:
             # Java not supported
             pass
