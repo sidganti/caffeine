@@ -176,7 +176,7 @@ class Stimulant:
         """
         Safely terminates instance
         """
-        os.system('clr')
+        os.system('cls')
         sys.stdout.flush()
         sys.exit()
 
@@ -191,7 +191,5 @@ def stimulant(runtime: int = 0, hotcorners: bool = False) -> None:
         prevents mouse from reaching the edges of the screen
     """
     stim = Stimulant(runtime, hotcorners)
-    try:
-        stim.run()
-    except KeyboardInterrupt:
-        stim.stop()
+    stim.run()
+    stim.stop()
