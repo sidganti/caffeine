@@ -1,12 +1,13 @@
 """
 Keeps the screen awake by moving the mouse randomly
 """
-import platform
 import threading
+import platform
 import time
 from itertools import cycle
 import random
 import sys
+import os
 
 import pyautogui
 
@@ -175,6 +176,7 @@ class Stimulant:
         """
         Safely terminates instance
         """
+        os.system('clr')
         sys.stdout.flush()
         sys.exit()
 
